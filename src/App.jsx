@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import moment from 'moment';
 import './App.css'
 /*eslint-disable*/
 function App() {
@@ -8,6 +9,9 @@ function App() {
   let [modal, setModal] = useState(false);
   let [mtitle, setMtitle] = useState(0);
   let [inputData, setInputdata] = useState('');
+  let today = new Date();
+  let formatDate = moment(today).format('YYYY-MM-DD'); //moment 라이브러리 사용
+  let [writeDate, setWritedate] = useState(['2025-05-17','2025-05-18','2025-05-25','2025-05-30']);
 
   return (
     <div className='App'>
@@ -32,23 +36,45 @@ function App() {
           title.map(function(a, i){      
             return ( 
             <div className='list' key={i}>
-              <h4 onClick={(e)=>{ e.stopPropagation; setModal(!modal); setMtitle(i)}}>{title[i]}
+              <h4 onClick={(e)=>{ setModal(!modal); setMtitle(i) }}>{title[i]}
                 <span onClick={(e)=>{ e.stopPropagation();
                   let copyLike = [...like];
                   copyLike[i] = like[i] + 1;
-                  setLike(copyLike)}}>🤍</span>{like[i]}
+                  setLike(copyLike)}}>🤍</span>{like[i]} 
+                  <span style={{paddingLeft : '20px'}} />
+                  <button onClick={(e)=>{ e.stopPropagation(); 
+                      let copyTitle = [...title];
+                      let copyLike = [...like];
+                      copyTitle.splice(i, 1); //함수사용 arr데이터 삭제
+                      copyLike.splice(i, 1);
+                      setTitle(copyTitle); 
+                      setLike(copyLike);
+                      // copyTitle[i];
+                      // setTitle(copyTitle.filter(word => word !== copyTitle[i])); //이것도 됨.
+                    }}>글삭제</button>
               </h4>
-              <p>2월 17일 발행</p>
+              <p>{writeDate[i]} 발행</p>
             </div> 
             );
           })
         }
       </div>
-      <input onChange={(e)=>{setInputdata(e.target.value)}}></input><button onClick={()=>{}}>발행</button>
+      <span style={{paddingRight: '10px'}}>글제목</span><input onChange = {(e)=>{setInputdata(e.target.value)}}></input>
+      <button onClick = { inputData.length == 0 ? ()=>{alert("글제목을 입력바랍니다.")} : ()=>{ // 사용자 입력데이터 length에 따른 데이터 유무 확인
+        let copyTitle = [...title,inputData]; //추가되는 arr 데이터를 뒤에 생성하려고 씀 ㅇㅇ
+        // copyTitle.unshift(inputData) //함수사용 arr데이터 추가 기존데이터 맨 앞으로 추가함
+        let copyLike = [...like,0];
+        console.log(formatDate);
+        let copyWritedate = [...writeDate,formatDate];
+        setWritedate(copyWritedate);
+        setTitle(copyTitle);
+        setLike(copyLike);
+      }}>발행</button>
+
       {
         modal == 1 ? <Modal mtitle = {mtitle} setTitle = {setTitle} title = {title}></Modal> : null
       }
-      
+
     </div>
   )
 }
@@ -65,4 +91,5 @@ function Modal(props){
     </div>
   )
 }
+
 export default App
