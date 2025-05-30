@@ -3,10 +3,11 @@ import './App.css'
 /*eslint-disable*/
 function App() {
 
-  let [title,setTitle] = useState([ '강남 우동 맛집', '파이썬 독학', '남자 코트 추천', '리액트 독학']);
+  let [title,setTitle] = useState(['강남 우동 맛집', '파이썬 독학', '남자 코트 추천', '리액트 독학']);
   let [like,setLike] = useState([0,0,0,0]);
   let [modal, setModal] = useState(false);
   let [mtitle, setMtitle] = useState(0);
+  let [inputData, setInputdata] = useState('');
 
   return (
     <div className='App'>
@@ -31,21 +32,23 @@ function App() {
           title.map(function(a, i){      
             return ( 
             <div className='list' key={i}>
-              <h4 onClick={()=>{ setModal(!modal), setMtitle(i)}}>{title[i]}
-                <span onClick={()=>{
+              <h4 onClick={(e)=>{ e.stopPropagation; setModal(!modal); setMtitle(i)}}>{title[i]}
+                <span onClick={(e)=>{ e.stopPropagation();
                   let copyLike = [...like];
                   copyLike[i] = like[i] + 1;
                   setLike(copyLike)}}>🤍</span>{like[i]}
               </h4>
               <p>2월 17일 발행</p>
             </div> 
-            )
+            );
           })
         }
       </div>
+      <input onChange={(e)=>{setInputdata(e.target.value)}}></input><button onClick={()=>{}}>발행</button>
       {
         modal == 1 ? <Modal mtitle = {mtitle} setTitle = {setTitle} title = {title}></Modal> : null
       }
+      
     </div>
   )
 }
