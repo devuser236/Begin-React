@@ -17,7 +17,6 @@ function App() {
     let copyTitle = [...title,inputData]; //추가되는 arr 데이터를 뒤에 생성하려고 씀 ㅇㅇ
     // copyTitle.unshift(inputData) //함수사용 arr데이터 추가 기존데이터 맨 앞으로 추가함
     let copyLike = [...like,0];
-    console.log(formatDate);
     let copyWritedate = [...writeDate,formatDate];
     setWritedate(copyWritedate);
     setTitle(copyTitle);
